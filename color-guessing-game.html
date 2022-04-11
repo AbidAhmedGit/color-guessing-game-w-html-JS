@@ -1,0 +1,152 @@
+<!-- TASK 1: Set up the HTML and core JavaScript for the game -->
+<!-- Part 1: Set up the HTML -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Guessing Game</title>
+</head>
+
+<!-- bonus challenge to add more design to the game -->
+<style>
+    h1{
+        color: rgba(37, 151, 196, 0.747);
+        text-align: center;
+    }
+
+    button{
+        color: rgba(52, 12, 233, 0.747);
+        text-align: center; 
+    }
+
+    body {
+            font-family: Veranda, Arial, sans-serif;
+            text-align: center;
+    }
+    
+    fieldset{
+            background:lavender;
+            border: 10px solid darkblue;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            /* width:500px; */
+            
+            align-content: space-between;
+    }
+
+</style>
+
+
+<body>
+    <!-- fieldset for bonus challenge to add more design to the game -->
+    <fieldset>
+    <!-- In the body element, add an h1 element with the text content of Color Guessing Game. 
+        Beneath this, add a button element with the type of "button", an onclick attribute with the value of "runGame()", 
+        and text content of "Start Game" (without the quotes). -->
+    <h1>Color Guessing Game</h1>
+    <button type="button" onclick="runGame()">Start Game</button>
+
+    <!-- Part 2:  Set up the script element, the colors array, and two main functions -->
+    <script>
+
+        // Inside the script element, create a global constant named COLORS_ARRAY.
+        // bonus challenge attempt:Use the array.sort() method to sort the list of colors alphabetically 
+        const COLORS_ARRAY1 = ['blue', 'gray', 'green', 'magenta',  'cyan', 'gold', 'orange', 'red', 'white', 'yellow'];
+        const COLORS_ARRAY = COLORS_ARRAY1.sort();
+
+        //start of runGame()
+        //start game button calls this function
+        function runGame(){
+
+            //Inital state of the game
+            let guess="";
+            let correct=false;
+            let numTries=0;
+
+            //generate a random number that is between 0 and the last index number(9) of the COLORS_ARRAY array.
+            //max number should be calculated dynamically rather than hard coded. 
+            const targetIndex = Math.floor(Math.random()*(COLORS_ARRAY.length));
+
+            //target and assign to it the value of the COLORS_ARRAY item that has the array index of targetIndex.            
+            const target = COLORS_ARRAY[targetIndex];
+
+            //to make it easier for you as a developer to test the game, 
+            //add a console.log at this point to log the target to the console.
+            console.log('target: '+ target);
+        
+        // Part 4: Prompt for a guess until correct guess is made
+
+            // do ... while loop. 
+            do{
+
+                //assign the value of the guess variable to the return value of calling prompt()
+                //bonus challenge attempt:use of the string.toLowerCase() method to help make the guess case insensitive.                 
+                guess1 = prompt('I am thinking of one of these colors:\n\n' + COLORS_ARRAY.join(', ')+
+                            '\n\nWhat color am I thinking of?\n');
+                
+
+                //if statement was put in place because I was getting an error trying to get lower case of null
+                //cancel button was not returning the abort game message.
+                if (guess1 !== null){
+                    guess = guess1.toLowerCase();
+                }else{
+                    guess = guess1;
+                }
+                            
+                
+                //increment number of tries
+                numTries +=1;            
+
+                //if condition should check if guess === null. If the player hits "Cancel" on the prompt, this is the value that will be assigned to guess. 
+                //If so, display an appropriate message to the user and use a return statement with no return value. This will exit the entire runGame function and end the game.            
+                if (guess1 === null){
+                    alert('The game has been aborted!');
+                    return;
+    
+                }
+                //still inside the loop block, assign the value of the variable correct to the return value from calling the function checkGuess.
+                //pass numTries for bonus challenge to display tries for everything
+                correct = checkGuess(guess, target, numTries);
+
+            //The condition to exit the loop should be:!correct (this is the same as saying (correct === false))     
+            }while(!correct);
+            alert('Congratulations!! you guessed the right color: '+ target + '. You guessed it in '+numTries+ ' tries');
+            
+            //let the player know their guess has been successful:
+            document.body.style.background = guess;
+        }
+        //end of runGame()
+
+        // Part 5: Write the content for the checkGuess function
+        function checkGuess(guess, target, numTries){
+            const sorryMsg = 'Sorry, your guess is incorrect.\n\n';
+            const tryMsg = '\n\nPlease try again.';
+
+            //declared for bonus challenge to display tries for everything
+            const tries = ('\n\nTries: '+numTries);
+            let correct = false;
+            
+            //check if guess is valid, alphab greater or lower than target or correct
+            if(!COLORS_ARRAY.includes(guess)){
+                alert('This color is not recognised. '+tryMsg);
+            }else if(guess > target){
+                alert(sorryMsg +'Hint: Your color is alphabetically higher than mine.'+ tryMsg + tries);
+
+            }else if(guess<target){
+                alert(sorryMsg + 'Hint: Your color is alphabetically lower than mine.'+ tryMsg + tries);
+            }else{
+                correct= true;
+            }
+
+            //this value will be used by runGame()
+            return correct;
+
+        }
+    </script>
+    <!--fieldset for bonus challenge to add more design to the game -->
+    </fieldset>
+</body>
+
+</html>
